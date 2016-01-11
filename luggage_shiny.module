@@ -1,0 +1,25 @@
+<?php
+/**
+ * @file
+ * Code for the luggage_shiny feature.
+ */
+
+include_once 'luggage_shiny.features.inc';
+function luggage_shiny_theme($existing, $type, $theme, $path) {
+  $theme = array();
+  $theme['html__shiny'] = array(
+    'render element' => 'content',
+    'template' => 'html--shiny',
+    'path' => drupal_get_path('module', 'luggage_shiny') . '/templates',
+  );
+  return $theme;
+}
+
+function luggage_shiny_preprocess_html(&$variables) {
+  if (!arg(2) && $node = menu_get_object()) {
+    if ($node->type == 'shiny') {
+      $variables['field_shiny_url'] = $node->field_shiny_url[LANGUAGE_NONE][0]['safe_value'];
+      $variables['theme_hook_suggestions'][] = 'html__shiny';
+    }
+  }
+}
